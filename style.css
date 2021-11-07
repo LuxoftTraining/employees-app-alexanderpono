@@ -1,0 +1,46 @@
+body{
+    font-family: Verdana;
+}
+button,input,select{
+    outline: none;
+    padding: 5px;
+    font-size: 15px;
+    background-color: #f1f1f1;
+    border: none;
+}
+.tab {
+    overflow: hidden;
+    border: 1pxsolid#ccc;
+    background-color: #f1f1f1;
+}
+    
+/* Стиль кнопок, использующийсядляоткрытияконтента */
+.tabbutton{
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
+    transition: 1s;
+    font-size: 13px;
+    margin: 0px;
+}
+    
+/* Измненение фона таба при наведении мышкой */
+.tabbutton:hover{
+    background-color: #ddd;
+}
+    
+/* Создаем класс для активного таба */
+.tabbutton.active{
+    background-color: #fff;
+}
+    
+/* Стиль для содержания таба */
+.tabcontent{
+    display: none;
+    padding: 6px12px;
+    border: 1pxsolid#ccc;
+    border-top: none;
+}
+    

@@ -114,3 +114,17 @@ function setEmployeeManager(id, managerId) {
     const employee = findById(id);
     employee.managerRef = managerId;
 }
+
+function searchEmployees(name, surname, managerRef) {
+    let results = [];
+    for (let e of DATA.employees) {
+        if (
+            (!name || e.name == name) &&
+            (!surname || e.surname == surname) &&
+            (!managerRef || e.managerRef == managerRef)
+        ) {
+            results.push(e);
+        }
+    }
+    return results;
+}
