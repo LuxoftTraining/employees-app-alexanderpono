@@ -32,17 +32,9 @@ function removeEmployee(id) {
 
 function showEmployee(employee) {
     const keys = Object.keys(employee);
-    console.log('Информацияосотруднике ' + employee['name'] + ':');
+    console.log('Информация о сотруднике ' + employee['name'] + ':');
     for (let key of keys) {
         console.log(key + ' = ' + employee[key]);
-    }
-}
-
-function showEmployees() {
-    // альтернативный вариант:
-    //DATA.employees.forEach(showEmployee);
-    for (let e of DATA.employees) {
-        showEmployee(e);
     }
 }
 
@@ -116,4 +108,9 @@ function testEmployee() {
 function getEmployeeJSON(id) {
     const e = findById(id);
     return JSON.stringify(e);
+}
+
+function setEmployeeManager(id, managerId) {
+    const employee = findById(id);
+    employee.managerRef = managerId;
 }

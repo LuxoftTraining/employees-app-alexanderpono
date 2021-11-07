@@ -5,8 +5,28 @@
     <title>Employees App</title>
     <script src="src/employees-json.js"></script>
     <script src="src/service.js"></script>
+    <script src="src/ui.js"></script>
 </head>
 <body>
+    <div id="employeesPlaceholder"></div>
+    <div id="addEmployeeFormErrorMessage"></div>
+    <div>
+        Имя:
+        <input id="name" placeholder="Имя">
+        
+        Фамилия:
+        <input id="surname" placeholder="Фамилия">
 
+        Руководитель:
+        <select id="managerSelect"></select>
+        
+        
+        <button onclick="addEmployeeUI()">Добавить сотрудника</button>
+    </div>
+        
+
+    <script>
+        runUI();
+    </script>
 </body>
 </html>
