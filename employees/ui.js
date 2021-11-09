@@ -1,12 +1,6 @@
-import {
-    getEmployees,
-    removeEmployee,
-    addEmployee,
-    findById,
-    searchEmployees,
-    setEmployeeManager
-} from './service';
+import { removeEmployee, addEmployee, searchEmployees, setEmployeeManager } from './service';
 import { DATA } from './employees-json';
+import { jsonToEmployees } from './model/Employee';
 
 const PLACEHOLDER = 'employeesPlaceholder';
 
@@ -27,12 +21,11 @@ function showEmployees(employees) {
     clearEmployeesPlaceholder();
     const ul = document.createElement('ul');
 
-    for (let employee of employees) {
+    for (let employee of jsonToEmployees(employees)) {
         const li = document.createElement('li');
         ul.appendChild(li);
 
-        let managerHTML = '';
-        li.innerHTML = employee.name + ' ' + employee.surname + managerHTML;
+        li.innerHTML = employee;
 
         const removeButton = document.createElement('button');
         removeButton.innerHTML = 'Удалить';

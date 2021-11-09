@@ -54,49 +54,9 @@ function findById(id) {
     }
 }
 
-function addPhone(id, phone) {
-    const employee = findById(id);
-    const phones = employee.phones;
-    if (!phones) {
-        employee.phones = [];
-    }
-    employee.phones.push(phone);
-}
-
 function setDateOfBirth(id, date) {
     const employee = findById(id);
     employee.dateOfBirth = date;
-}
-
-function getAge(id) {
-    const employee = findById(id);
-    let ageDiff = Date.now() - employee.dateOfBirth.getTime();
-    let ageDate = new Date(ageDiff); // miliseconds from epoch
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
-}
-
-function formatDate(date) {
-    let day = date.getDate();
-    if (day < 10) day = '0' + day;
-    let month = date.getMonth() + 1;
-    if (month < 10) month = '0' + month;
-    let year = date.getFullYear();
-
-    return day + '.' + month + '.' + year;
-}
-
-function getEmployeeInfo(id) {
-    const e = findById(id);
-
-    const phones = e.phones ? `Списоктелефонов: ${e.phones}` : '';
-    const age = e.dateOfBirth ? `Возраст: ${getAge(e.id)}` : '';
-    return ` 
-            Имя: ${e.name}
-            Фамилия: ${e.surname}
-            Датарождения: ${formatDate(e.dateOfBirth)}
-              ${phones} 
-              ${age}
-            `;
 }
 
 function testEmployee() {
