@@ -84,6 +84,7 @@ function removeEmployeeUI(id) {
 }
 
 function fillSelect(select, values, selectedValue) {
+    select.innerHTML = '';
     for (let val of values) {
         const option = document.createElement('option');
         option.text = val.text;
@@ -96,7 +97,6 @@ function fillSelect(select, values, selectedValue) {
 function getEmployeesOptions() {
     let options = [];
     for (let e of DATA.employees) {
-        console.error('getEmployeesOptions() e=', e);
         options.push({ text: e.name + ' ' + e.surname, value: e.id });
     }
     return options;
