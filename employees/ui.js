@@ -1,10 +1,20 @@
+import {
+    getEmployees,
+    removeEmployee,
+    addEmployee,
+    findById,
+    searchEmployees,
+    setEmployeeManager
+} from './service';
+import { DATA } from './employees-json';
+
 const PLACEHOLDER = 'employeesPlaceholder';
 
 function clearEmployeesPlaceholder() {
     document.getElementById(PLACEHOLDER).innerHTML = '';
 }
 
-function runUI() {
+export function runUI() {
     showEmployees(DATA.employees);
     fillSelect(document.getElementById('managerSelect'), getEmployeesOptions());
     fillSelect(document.getElementById('managerSearch'), getEmployeesOptions());
@@ -45,7 +55,7 @@ function showEmployees(employees) {
     document.getElementById(PLACEHOLDER).appendChild(ul);
 }
 
-function addEmployeeUI() {
+export function addEmployeeUI() {
     let errorHTML = '';
     const name = document.getElementById('name').value;
     if (name == '') {
@@ -92,7 +102,7 @@ function getEmployeesOptions() {
     return options;
 }
 
-function searchEmployeeUI() {
+export function searchEmployeeUI() {
     const name = document.getElementById('nameSearch').value;
     const surname = document.getElementById('surnameSearch').value;
     const managerRef = document.getElementById('managerSearch').value;
@@ -106,7 +116,7 @@ function searchEmployeeUI() {
  * @param evt событие, вызывающее активацию
  * @param id идентификатор таба
  */
-function openTab(evt, id) {
+export function openTab(evt, id) {
     // Определяем переменные
     var i, tabcontent, tablinks;
 
