@@ -6,7 +6,8 @@ export const DATA = {
             surname: 'Пафнутьев',
             department: 'IT',
             managerRef: 2,
-            dateOfBirth: '2000-01-01'
+            dateOfBirth: '2000-01-01',
+            salary: 1000
         },
         {
             id: 2,
@@ -14,23 +15,26 @@ export const DATA = {
             surname: 'Васильев',
             department: 'IT',
             managerRef: 2,
-            dateOfBirth: '2010-10-10'
+            dateOfBirth: '2010-10-10',
+            salary: 900
         },
         {
-            id: 3,
+            id: 4,
             name: 'Маша',
             surname: 'Морева',
             department: 'Sales',
             managerRef: 2,
-            dateOfBirth: '2020-01-20'
+            dateOfBirth: '2020-01-20',
+            salary: 800
         },
         {
-            id: 4,
+            id: 3,
             name: 'Коля',
             surname: 'Николаев',
             department: 'Sales',
             managerRef: 2,
-            dateOfBirth: '1990-01-01'
+            dateOfBirth: '1990-01-01',
+            salary: 1010
         }
     ]
 };

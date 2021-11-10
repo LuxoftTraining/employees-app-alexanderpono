@@ -17,35 +17,14 @@ export function runUI() {
     assignSendOnEnter('addPane', 'addEmployeeButton');
 }
 
-function showEmployees(employees) {
-    clearEmployeesPlaceholder();
-    const ul = document.createElement('ul');
+function getEmployees() {
+    return DATA.employees;
+}
 
-    for (let employee of jsonToEmployees(employees)) {
-        const li = document.createElement('li');
-        ul.appendChild(li);
-
-        li.innerHTML = employee;
-
-        const removeButton = document.createElement('button');
-        removeButton.innerHTML = 'Удалить';
-        removeButton.addEventListener('click', () => removeEmployeeUI(employee.id));
-        li.appendChild(removeButton);
-
-        if (employee.managerRef) {
-            const managerSpan = document.createElement('span');
-            const managerSelect = document.createElement('select');
-            fillSelect(managerSelect, getEmployeesOptions(), employee.managerRef);
-            managerSelect.addEventListener(
-                'change',
-                () => (employee.managerRef = managerSelect.value)
-            );
-            managerSpan.innerHTML = ' <b>Руководитель:</b> ';
-            li.appendChild(managerSpan);
-            li.appendChild(managerSelect);
-        }
-    }
-    document.getElementById(PLACEHOLDER).appendChild(ul);
+function showEmployees(employeesJSON) {
+    let employees = jsonToEmployees(employeesJSON);
+    const html = showEmployeesView(getEmployees(), employees);
+    document.getElementById(PLACEHOLDER).innerHTML = html;
 }
 
 export function addEmployeeUI() {
@@ -71,7 +50,7 @@ export function addEmployeeUI() {
     document.getElementById('surname').value = '';
 }
 
-function removeEmployeeUI(id) {
+export function removeEmployeeUI(id) {
     removeEmployee(id);
     showEmployees(DATA.employees);
 }
@@ -85,6 +64,39 @@ function fillSelect(select, values, selectedValue) {
         if (selectedValue == option.value) option.selected = true;
         select.appendChild(option);
     }
+}
+
+export function selectView(values) {
+    const values_html = values
+        .map(
+            (v) =>
+                `<option value="${v.value}" 
+    ${v.selected ? 'selected' : ''}>${v.text}</option>`
+        )
+        .join('');
+    return `<select>${values_html}</select>`;
+}
+
+export function employeeManagerView(employees, selectedId) {
+    if (!selectedId) return '';
+    let values = employees.map((e) => {
+        return { text: e.name + ' ' + e.surname, value: e.id, selected: e.id === selectedId };
+    });
+    return `<span>${selectView(values)}</span>`;
+}
+
+function showEmployeesView(allEmployees, employees) {
+    let li_items = employees
+        .map(
+            (e) =>
+                `<li>${e}<button 
+            onclick="removeEmployeeUI(${e.id})">X</button>
+    ${employeeManagerView(allEmployees, e.managerRef)}
+    </li>`
+        )
+        .join('');
+
+    return `<ul>${li_items}</ul>`;
 }
 
 function getEmployeesOptions() {

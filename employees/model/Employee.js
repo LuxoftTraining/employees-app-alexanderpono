@@ -1,5 +1,4 @@
 import { Person } from './Person';
-import { DATA } from '../employees-json';
 
 export class Employee extends Person {
     constructor(name, surname, department) {
@@ -19,8 +18,3 @@ export function jsonToEmployees(employeesJSON) {
     }
     return employees;
 }
-
-window.Employee = Employee;
-window.allEmployees = function () {
-    return jsonToEmployees(DATA.employees);
-};
