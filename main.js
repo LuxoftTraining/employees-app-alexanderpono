@@ -7,15 +7,15 @@ import {
 } from './employees/ui-all';
 import './style.css';
 import { Employee, jsonToEmployees } from './employees/model/Employee';
-import { DATA } from './employees/employees-json';
+import * as server from './employees/server';
 
 window.addEmployeeUI = addEmployeeUI;
 window.openTab = openTab;
 window.searchEmployeeUI = searchEmployeeUI;
 window.removeEmployeeUI = removeEmployeeUI;
 window.Employee = Employee;
-window.allEmployees = function () {
-    return jsonToEmployees(DATA.employees);
+window.allEmployees = async function () {
+    return jsonToEmployees(await server.getEmployees());
 };
 
 runUI();
@@ -28,16 +28,17 @@ function render() {
     document.getElementById('employees').innerHTML = html;
 }
 
-let employees = jsonToEmployees(DATA.employees);
 let html = '';
 
 async function printBonus() {
+    let employees = jsonToEmployees(await server.getEmployees());
     html += '<br>Async/await version:<br>';
     for (let e of employees) {
         let bonus = '';
         try {
             bonus = await e.bonus();
-            html += `${e.name} bonus: ${bonus} total: ${e.salary + bonus}<br>`;
+            const total = e.salary ? e.salary + bonus : `ABSENT SALARY + ${bonus}`;
+            html += `${e.name} bonus: ${bonus} total: ${total}<br>`;
         } catch (bonus) {
             html += `${e.name} bonus is too big (${bonus}!) <br>`;
         }

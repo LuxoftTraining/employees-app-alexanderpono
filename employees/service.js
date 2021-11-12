@@ -10,19 +10,6 @@ function findByName(name, surname) {
     return res;
 }
 
-export function addEmployee(name, surname) {
-    if (!name || name.length == 0 || !surname || surname.length == 0) {
-        throw new Error('name and surname should be not empty');
-    }
-    let max = 0;
-    for (let e of DATA.employees) {
-        if (e.id > max) max = e.id;
-    }
-    let id = max + 1;
-    DATA.employees.push({ id, name, surname });
-    return id;
-}
-
 export function removeEmployee(id) {
     let index = 0;
     for (let e of DATA.employees) {
@@ -70,27 +57,4 @@ function testEmployee() {
 function getEmployeeJSON(id) {
     const e = findById(id);
     return JSON.stringify(e);
-}
-
-export function setEmployeeManager(id, managerId) {
-    const employee = findById(id);
-    employee.managerRef = managerId;
-}
-
-export function searchEmployees(name, surname, managerRef) {
-    let results = [];
-    for (let e of DATA.employees) {
-        if (
-            (!name || e.name == name) &&
-            (!surname || e.surname == surname) &&
-            (!managerRef || e.managerRef == managerRef)
-        ) {
-            results.push(e);
-        }
-    }
-    return results;
-}
-
-export function getEmployees() {
-    return DATA.employees;
 }

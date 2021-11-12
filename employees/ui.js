@@ -1,6 +1,7 @@
-import { removeEmployee, addEmployee, searchEmployees, setEmployeeManager } from './service';
+import { removeEmployee } from './service';
 import { DATA } from './employees-json';
 import { jsonToEmployees } from './model/Employee';
+import * as server from './server';
 
 const PLACEHOLDER = 'employeesPlaceholder';
 
@@ -8,26 +9,25 @@ function clearEmployeesPlaceholder() {
     document.getElementById(PLACEHOLDER).innerHTML = '';
 }
 
-export function runUI() {
-    showEmployees(DATA.employees);
-    fillSelect(document.getElementById('managerSelect'), getEmployeesOptions());
-    fillSelect(document.getElementById('managerSearch'), getEmployeesOptions());
+export async function runUI() {
+    const employees = await server.getEmployees();
+    const employeesOptions = await getEmployeesOptions();
+    showEmployees(employees);
+    fillSelect(document.getElementById('managerSelect'), employeesOptions);
+    fillSelect(document.getElementById('managerSearch'), employeesOptions);
     document.getElementById('searchButton').click();
     assignSendOnEnter('searchPane', 'searchEmployeesButton');
     assignSendOnEnter('addPane', 'addEmployeeButton');
 }
 
-function getEmployees() {
-    return DATA.employees;
-}
-
-function showEmployees(employeesJSON) {
+async function showEmployees(employeesJSON) {
     let employees = jsonToEmployees(employeesJSON);
-    const html = showEmployeesView(getEmployees(), employees);
+    let allEmployees = await server.getEmployees();
+    const html = showEmployeesView(allEmployees, employees);
     document.getElementById(PLACEHOLDER).innerHTML = html;
 }
 
-export function addEmployeeUI() {
+export async function addEmployeeUI() {
     let errorHTML = '';
     const name = document.getElementById('name').value;
     if (name == '') {
@@ -42,10 +42,11 @@ export function addEmployeeUI() {
     document.getElementById('addEmployeeFormErrorMessage').innerHTML = errorHTML;
     if (errorHTML.length != 0) return;
 
-    const id = addEmployee(name, surname);
+    let employee = await server.addEmployee(name, surname);
     const managerId = document.getElementById('managerSelect').value;
-    setEmployeeManager(id, managerId);
-    showEmployees(DATA.employees);
+    await server.setEmployeeManager(employee.id, managerId);
+
+    showEmployees(await server.getEmployees());
     document.getElementById('name').value = '';
     document.getElementById('surname').value = '';
 }
@@ -91,7 +92,7 @@ function showEmployeesView(allEmployees, employees) {
             (e) =>
                 `<li>${e}<button 
             onclick="removeEmployeeUI(${e.id})">X</button>
-    ${employeeManagerView(allEmployees, e.managerRef)}
+    ${employeeManagerView(allEmployees, e.managerId)}
     </li>`
         )
         .join('');
@@ -99,21 +100,20 @@ function showEmployeesView(allEmployees, employees) {
     return `<ul>${li_items}</ul>`;
 }
 
-function getEmployeesOptions() {
-    let options = [];
-    for (let e of DATA.employees) {
-        options.push({ text: e.name + ' ' + e.surname, value: e.id });
-    }
-    return options;
+async function getEmployeesOptions() {
+    let employees = await server.getEmployees();
+    return employees.map((e) => {
+        return { text: e.name + ' ' + e.surname, value: e.id };
+    });
 }
 
-export function searchEmployeeUI() {
-    const name = document.getElementById('nameSearch').value;
-    const surname = document.getElementById('surnameSearch').value;
-    const managerRef = document.getElementById('managerSearch').value;
+export async function searchEmployeeUI() {
+    const name = document.getElementById('nameSearch').value || null;
+    const surname = document.getElementById('surnameSearch').value || null;
+    const managerId = document.getElementById('managerSearch').value || null;
+    const example = { name, surname, managerId };
 
-    const employees = searchEmployees(name, surname, managerRef);
-    showEmployees(employees);
+    showEmployees(await server.findByExample(example));
 }
 
 /**

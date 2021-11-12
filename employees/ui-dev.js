@@ -1,9 +1,7 @@
 import * as ui from './ui';
 export * from './ui';
-import { DATA } from './employees-json';
 
-export function runUI() {
-    ui.runUI();
-    console.log(JSON.stringify(DATA));
+export async function runUI() {
+    await ui.runUI();
     document.body.style.backgroundColor = '#EFE';
 }
